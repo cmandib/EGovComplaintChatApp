@@ -63,11 +63,12 @@ class ChatroomConsumer(WebsocketConsumer):
         online_count = self.chatroom.users_online.count()-1
         event = {
             'type':'online_count_handler',#handler will render the htmx partial
-            'online_count':online_count
+            'online_count':online_count,
         }
         async_to_sync(self.channel_layer.group_send)(self.chatroom_name,event)
 
     def online_count_handler(self,event):
         online_count =event['online_count']
-        html = render_to_string("a_rtchat/partials/online_count.html",{'online_count':online_count})
+        chatroom = get_object_or_404(ChatGroup, group_name = self.chatroom_name)
+        html = render_to_string("a_rtchat/partials/online_count.html",{'online_count':online_count,'chatroom':chatroom})
         self.send(text_data=html)

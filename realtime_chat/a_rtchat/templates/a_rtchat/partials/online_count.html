@@ -1,3 +1,11 @@
 <span id="online-count" hx-swap-oob="outerHTML" class="pr-1">
+    {%if chatroom.is_private == True%}
+    {%if online_count == 1%}
+    <p>Online</p>
+    {%else%}
+    <p>Offline</p>
+    {%endif%}
+    {%else%}
     {{online_count}}
+    {%endif%}
 </span>

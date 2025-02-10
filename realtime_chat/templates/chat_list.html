@@ -1,0 +1,21 @@
+{% extends 'layouts/blank.html' %}
+
+{% block content %} 
+
+    <div class="max-w-4xl mx-auto px-8 py-24">
+        <h1>Chat list</h1>
+        <ul>
+            {%for chatroom in user.chat_groups.all%}
+                {%if chatroom.is_private%}
+                    {%for member in chatroom.members.all%}
+                        {%if member != user%}
+                        <hr>
+                        <li class="font-bold pt-3"> <img class="rounded-full h-10 w-10 object-cover" src="{{member.profile.avatar}}" alt="avatar"> <a href="{% url 'chatroom' chatroom.group_name %}">{{member.profile.name}}</a></li>
+                        {%endif%}
+                    {%endfor%}
+                {%endif%}
+            {%endfor%}
+        </ul>
+    </div>
+
+{% endblock %}

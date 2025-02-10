@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('a_rtchat.urls')),
     path('profile/', include('a_users.urls')),
     path('@<username>/', profile_view, name="profile"),
+    path('chat_list/', chat_list_view, name="chat_list")
 ]
 
 # Only used when DEBUG=True, whitenoise can serve files when DEBUG=False
