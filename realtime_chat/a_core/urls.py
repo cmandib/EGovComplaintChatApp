@@ -24,7 +24,8 @@ from a_home.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('a_rtchat.urls')),
+    path('mainchat/', include('a_rtchat.urls')),
+    path('', home_view,),
     path('profile/', include('a_users.urls')),
     path('@<username>/', profile_view, name="profile"),
     path('chat_list/', chat_list_view, name="chat_list")

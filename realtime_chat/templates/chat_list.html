@@ -1,9 +1,9 @@
 {% extends 'layouts/blank.html' %}
 
 {% block content %} 
-
+    {%if user.is_superuser%}
     <div class="max-w-4xl mx-auto px-8 py-24">
-        <h1>Chat list</h1>
+        <h1>Complaint Submitters</h1>
         <ul>
             {%for chatroom in user.chat_groups.all%}
                 {%if chatroom.is_private%}
@@ -17,5 +17,18 @@
             {%endfor%}
         </ul>
     </div>
+    {%else%}
+    <div class="max-w-4xl mx-auto px-8 py-24">
+        <h1>My Inspectors</h1>
+        <ul>
+            {% for admin in admins %}
+                <li>{{ admin.username }}</li>
+                <a href="{%url 'start-chat' admin.username%}"><button>Complain to Inspector</button></a>
+                {% empty %}
+                <li>No admin users found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {%endif%}
 
 {% endblock %}
