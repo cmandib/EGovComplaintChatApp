@@ -3,12 +3,11 @@
 {%block content%}
 <wrapper class="block max-w-2xl mx-auto my-10 px-6">
     <div id="chat_window" class="h-[45rem] flex flex-col bg-gray-800 rounded-2xl shadow-2xl relative p-1">
-        <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10">
+        <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10 h-16">
             {%if other_user%}
-            <a href="{%url 'profile' other_user.username%}">
-                <div class="flex flex-col items-center gap-2 p-4 sticky top-0 z-10">
-                    <img class="w-10 h-10 rounded-full object-cover" src="{{other_user.profile.avatar}}" alt="Profile pic">
-                    <div>
+            <a href="{%url 'profile' other_user.username%}" class="flex items-center gap-2">
+                    <img class="w-8 h-8 rounded-full object-cover" src="{{other_user.profile.avatar}}" alt="Profile pic">
+                    <div class="flex flex-col">
                         
                         <span class="font-bold text-white">{{other_user.profile.name}}</span>
                         <span class="text-sm font-light text-gray-400">@{{other_user.username}}</span>
@@ -16,10 +15,9 @@
                     <div>
                         <span id="online-count" class="pr-1"></span>
                     </div>
-                </div>
             </a>
             {%else%}
-            <span id="online-count" class="pr-1"></span>online
+            <span id="online-count" class="pr-1">Checking status...</span>
             {%endif%}
         </div>
         <div id='chat_container' class="overflow-y-auto grow">
@@ -51,8 +49,16 @@
                 hx-swap="beforeend"
                 _="on htmx:beforeSend reset() me">
                     {%csrf_token%}
-                    <input type="file" name="file" id="id_file" class="!bg-transparent text-gray-400">
-                    <button type="submit" class="whitespace-nowrap !text-sm !py-3 !px-4 h-fit">Send File</button>
+                    <div class="flex items-center w-full gap-3">
+                        <label for="id_file" class="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full bg-red-600 font-bold text-white hover:bg-red-700">
+                            +
+                        </label>
+                        <input type="file" name="file" id="id_file" class="hidden">
+                        <span id="file-name" class="text-gray-400 text-sm truncate flex-1">No file chosen</span>
+                        <button type="submit" class="whitespace-nowrap !text-sm !py-3 !px-4 h-fit bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg">
+                            Send File
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -60,14 +66,71 @@
 </wrapper>
 {%endblock%}
 
-{%block javascript%}
+{% block javascript %}
 <script>
-    function scrollToBottom(time=0){
-        setTimeout(function(){
-            const container = document.getElementById('chat_container');
-            container.scrollTop = container.scrollHeight;
-        },time);
-    }
-    scrollToBottom()
+    document.getElementById('id_file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    });
 </script>
-{%endblock%}
+<script>
+    function scrollToBottom() {
+        const container = document.getElementById('chat_container');
+        if (!container) return;
+
+        container.style.opacity = '0';
+        container.style.scrollBehavior = 'auto'; 
+        container.scrollTop = container.scrollHeight;
+
+        setTimeout(() => {
+            container.style.transition = 'opacity 0.4s ease-out, scroll-behavior 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            container.style.opacity = '1';
+            container.style.scrollBehavior = 'smooth';
+            
+            const targetPos = container.scrollHeight;
+            container.scrollTo({
+                top: targetPos + 30, 
+                behavior: 'smooth'
+            });
+
+            setTimeout(() => {
+                container.scrollTop = targetPos;
+            }, 600);
+        }, 50);
+
+        const contentWatcher = setInterval(() => {
+            const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 5;
+            if (!isAtBottom) {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+            } else {
+                clearInterval(contentWatcher);
+            }
+        }, 100);
+
+        setTimeout(() => clearInterval(contentWatcher), 3000);
+    }
+
+    (() => {
+        if (!sessionStorage.getItem('chatInitialized')) {
+            sessionStorage.setItem('chatInitialized', 'true');
+            scrollToBottom();
+        } else {
+            setTimeout(scrollToBottom, 10);
+        }
+
+        const observer = new MutationObserver(scrollToBottom);
+        observer.observe(document.getElementById('chat_messages'), {
+            childList: true,
+            subtree: true
+        });
+        
+        document.querySelectorAll('#chat_messages img').forEach(img => {
+            img.onload = scrollToBottom;
+            if (img.complete) scrollToBottom();
+        });
+    })();
+</script>
+{% endblock %}

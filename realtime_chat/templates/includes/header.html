@@ -1,8 +1,7 @@
 {% load static %}
-<header class="flex items-center justify-between bg-gray-800 h-20 px-8 text-white sticky top-0 z-40">
+<header class="flex items-center justify-between bg-gradient-to-r from-red-700 via-red-600 to-blue-700 h-20 px-8 text-white sticky top-0 z-40">
     <div>
         <a class="flex items-center gap-2" href="/">
-            
             <span class="text-lg font-bold">Report Labour Malpractice</span>
         </a>
     </div>
@@ -21,7 +20,7 @@
                     {{ request.user.profile.name }}
                     <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
                 </a>
-                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
+                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-red-700 shadow rounded-lg w-40 p-2 z-20"
                 x-transition:enter="duration-300 ease-out"
                 x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"

@@ -11,9 +11,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://unpkg.com/htmx.org@2.0.2"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script><!--htmx websocket extension, removed version number from here verion=> org@1.9.12-->
-    <!-- <script src="https://unpkg.com/hyperscript.org@0.9.14"></script> -->
-    <!-- didnt add the above cause ive got 12th version below for now -->
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
     {% django_htmx_script %}
     <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,58 +20,55 @@
             display: none !important; 
         }
         h1 {
-            @apply text-4xl font-bold mb-4
+            @apply text-4xl font-bold mb-4 text-red-700
         }
         h2 {
-            @apply text-xl font-bold mb-2
+            @apply text-2xl font-bold mb-2 text-blue-700
         }
-    	h3 {
-            @apply text-lg font-bold
+        h3 {
+            @apply text-lg font-bold text-blue-800
         }
         p {
-            @apply mb-4
+            @apply mb-4 text-gray-700
         }
         .button, button, [type='submit'], [type='button'] {
-            @apply bg-indigo-600 text-white font-bold rounded-lg shadow-lg transition-all cursor-pointer
+            @apply bg-gradient-to-r from-red-600 to-blue-600 text-white font-bold rounded-lg shadow-lg transition-all cursor-pointer
         }
         .button, button a, [type='submit'], [type='button'] {
             @apply px-6 py-4 inline-block 
         }
         .button:hover, button:hover, [type='submit']:hover, [type='button']:hover {
-            @apply bg-indigo-700
+            @apply bg-gradient-to-r from-red-700 to-blue-700 shadow-md
         }
         .button:active, button:active, [type='submit']:active, [type='button']:active {
             @apply scale-95
         }
         .button.alert, button.alert {
-            @apply bg-red-700
-        }
-        .button.alert:hover, button.alert:hover {
-            @apply bg-red-600
+            @apply bg-red-700 hover:bg-red-600
         }
         .button-red {
-            @apply !bg-red-500 hover:!bg-red-600
+            @apply !bg-red-600 hover:!bg-red-700
         }
         .button-gray {
-            @apply !bg-gray-300 hover:!bg-[#c3c9d0]
+            @apply !bg-gray-300 hover:!bg-gray-400
         }
         .navitems>li>a {
-            @apply flex items-center gap-2 h-12 px-4 hover:bg-[rgba(31,41,55,0.3)] rounded-lg;
+            @apply flex items-center gap-2 h-12 px-4 hover:bg-[rgba(220,38,38,0.2)] rounded-lg;
         }
         .hoverlist>* {
-            @apply hover:bg-gray-100 rounded-md transition duration-150;
+            @apply hover:bg-red-50 rounded-md transition duration-150;
         }
         .hoverlist>*>a {
-            @apply flex items-center p-2;
+            @apply flex items-center p-2 text-red-700;
         }
         .highlight {
-            @apply !bg-indigo-100;
+            @apply !bg-blue-100;
         }
         .allauth content a {
-            @apply underline underline-offset-2
+            @apply underline underline-offset-2 text-blue-600
         }
         .allauth content a:hover {
-            @apply text-indigo-500
+            @apply text-red-600
         }
         .allauth form[action="/accounts/signup/"] ul {
             @apply hidden
@@ -82,7 +77,7 @@
             @apply block
         }
         .allauth .helptext {
-            @apply block mt-4
+            @apply block mt-4 text-gray-600
         }
         label {
             @apply hidden
@@ -91,25 +86,25 @@
             @apply bg-white pl-0
         }
         .textarea, textarea, input {
-            @apply w-full rounded-lg py-4 px-5 bg-gray-100
+            @apply w-full rounded-lg py-4 px-5 bg-gray-100 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500
         }
         .errorlist li {
-            @apply p-1 pl-4 border-l-red-500 border-l-4 border-solid mb-2 text-red-500
+            @apply p-1 pl-4 border-l-red-600 border-l-4 border-solid mb-2 text-red-600 bg-red-50
         }
         label[for="id_remember"] {
-            @apply inline-block w-auto mr-2
+            @apply inline-block w-auto mr-2 text-gray-700
         }
         input[name="remember"] {
             @apply w-auto
         }
-        .alert-info { @apply bg-sky-600 }
-        .alert-success { @apply bg-emerald-600 }
-        .alert-warning { @apply bg-orange-600 }
-        .alert-danger { @apply bg-red-600 }
+        .alert-info { @apply bg-blue-600 text-white }
+        .alert-success { @apply bg-green-600 text-white }
+        .alert-warning { @apply bg-yellow-600 text-white }
+        .alert-danger { @apply bg-red-600 text-white }
     </style>
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="{% block class %}{% endblock %}">
-	
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="{% block class %}{% endblock %} bg-gray-50">
+    
     {% include 'includes/messages.html' %}
 
     {% include 'includes/header.html' %}

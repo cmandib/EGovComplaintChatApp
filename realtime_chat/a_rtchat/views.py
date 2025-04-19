@@ -43,6 +43,7 @@ def chat_view(request, chatroom_name='public-chat'):
         'chat_group':chat_group
     }
     return render(request,'a_rtchat/chat.html',context)
+
 @login_required
 def get_or_create_chatroom(request,username):
     if request.user.username == username:
