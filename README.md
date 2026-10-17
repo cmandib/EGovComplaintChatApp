@@ -38,8 +38,6 @@ realtime_chat/      the app itself
   a_rtchat/         ChatGroup and GroupMessage models, consumer, chat views and templates
   templates/        base layout, header, allauth overrides
   static/           css and images
-htmx_demo/          a separate little Django project we used to try out HTMX
-                    (a user list that polls every 2 seconds); not part of the app
 ```
 
 ## Running it locally
